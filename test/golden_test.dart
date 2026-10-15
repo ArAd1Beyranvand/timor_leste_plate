@@ -29,34 +29,56 @@ void main() {
         'private': (
           TimorLestePlates.private,
           TimorLesteThemes.private,
-          '1 4 8 7 5',
+          '14 875',
         ),
         'government': (
           TimorLestePlates.government,
           TimorLesteThemes.government,
-          '0 5 2 0 4 G',
+          '05 204 G',
         ),
         'indonesian': (
-          TimorLestePlates.indonesian(),
+          TimorLestePlates.indonesian,
           TimorLesteThemes.indonesian,
-          '0 4 8 5 D F 1 2 0 2 A A',
+          '0485 DF 1202 AA',
         ),
         'portuguese_t': (
-          TimorLestePlates.portuguese(),
+          TimorLestePlates.portuguese,
           TimorLesteThemes.portuguese,
-          'T 1 2 3 4',
+          'T 12 34',
+        ),
+        'indonesian_short': (
+          TimorLestePlates.indonesian,
+          TimorLesteThemes.indonesian,
+          '0485 DF 12 A',
         ),
         'portuguese_tp': (
-          TimorLestePlates.portuguese(prefix: 2),
+          TimorLestePlates.portuguese,
           TimorLesteThemes.portuguese,
-          'T P 1 2 3 4',
+          'TP 12 34',
         ),
         'portuguese_stacked': (
           TimorLestePlates.portugueseStacked,
           TimorLesteThemes.portuguese,
-          'T 1 2 3 4',
+          'T 12 34',
         ),
       };
+
+  test('variable fields complete at their minimum', () {
+    final PlateController c = PlateController.fromValues(
+      TimorLestePlates.indonesian,
+      ['0485', 'DF', '1', 'A'],
+    );
+    expect(c.isCompleted, isTrue);
+    c.setAt(2, '');
+    expect(c.isCompleted, isFalse);
+    c.dispose();
+    final PlateController t = PlateController.fromValues(
+      TimorLestePlates.portuguese,
+      ['T', '12', '34'],
+    );
+    expect(t.isCompleted, isTrue);
+    t.dispose();
+  });
 
   for (final MapEntry<String, (PlateSpec, PlateTheme, String)> c
       in cases.entries) {
