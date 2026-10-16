@@ -1,9 +1,8 @@
 /// Timor-Leste's licence plates for the `plate_core` library.
 ///
-/// The current Australian-standard 372×134 mm plates, black on white —
-/// private `NN·NNN` and government `NN·NNNG`, both with `TLS` — plus the two
-/// historical series: the Indonesian `DF` plate (white on black, with an
-/// expiry box) and the Portuguese Timor `T`/`TP` plates (white on black).
+/// The current 372x134 mm plates, black on white (private `NN·NNN`,
+/// government `NN·NNNG`), plus the historical Indonesian `DF` plate and the
+/// Portuguese Timor `T`/`TP` plates, both white on black.
 library;
 
 export 'src/timor_leste_colors.dart';

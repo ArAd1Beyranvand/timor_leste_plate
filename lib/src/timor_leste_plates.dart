@@ -1,40 +1,24 @@
 import 'dart:math';
 
+import 'package:plate_alphabet/plate_alphabet.dart';
 import 'package:plate_core/plate_core.dart';
 
 import 'timor_leste_colors.dart';
 import 'timor_leste_country.dart';
-import 'package:plate_alphabet/plate_alphabet.dart';
 
-/// Where the ink sits, in plate coordinates. Reference plates were flattened
-/// to the article's 372×134 mm by platekit and the ink projected onto each
-/// axis.
+/// Ink positions in plate coordinates: reference plates flattened to the
+/// article's 372x134 mm, ink projected onto each axis.
 ///
-/// **Current plate** (`______1.png`, `East_Timor_license_plate_graphic.png`):
-/// digit ink y 18.2..99 / 19.5..94.8 (centre ~58), x 17.8..283.5; digit
-/// centres 28.4, 77.4 | diamond 127.6 | 170, 219.6, 271.8, i.e. a pitch of ~50
-/// and a 43-wide diamond cell. The ink is left of centre — the right 90 mm is
-/// the room a government `G` takes. `TLS` ink y 105.2..122.8 (17.6 tall), x
-/// 159.8..217.8, centred on the plate. The four screw dots at y 9..15 are
-/// not drawn.
+/// The current plate's ink is left of centre because the right 90 mm is the
+/// room a government `G` takes; its screw dots are not drawn. The Indonesian
+/// plate is laid on 372x134 with an expiry box under which the main row sits.
+/// The Portuguese Timor plates have no published size, so their canvases are
+/// the artwork's proportions scaled by 0.92.
 ///
-/// **Indonesian plate** (`..._under_Indonesian_Occupation.png`, flattened at
-/// 372×128 and laid on 372×134): expiry ink y 9.2..29.5, x 140.5..231.5;
-/// the box under it has its bottom edge at y 33.2..36.5 and spans
-/// x 14.8..357; main row ink y 48.2..114.8, x 16.8..355.5 (`DF`, `1202`, `AA`
-/// at ~35 pitch with ~28 gaps).
-///
-/// **Portuguese Timor** (`orig_Portuguese_Timor_vehicle_registration_plates.jpg`,
-/// an artwork of three plates, measured by hand on the 543×511 original; the
-/// article gives no size, so the canvases are the artwork's proportions
-/// scaled by 0.92): the long plates are 543×120 (ar 4.5) with ink y 20..108
-/// of the plate and `T-12-34` x 92..472; the stacked plate is 326×231 with
-/// `T` ink y 15..105 and `12-34` y 135..218, x 122..402.
-///
-/// **Under-height ink, accepted.** The reference digits are a condensed face
-/// 75–80 mm tall; a slot as tall as the plate allows prints ~55% of its
-/// height as ink, and the engine shrinks a glyph that is wider than its
-/// slot. Ink is therefore ~65–85% of reference; `plate_core` is unchanged.
+/// Ink is deliberately under reference height: the reference digits are a
+/// condensed face, a slot as tall as the plate allows prints ~55% of its
+/// height as ink, and the engine shrinks a glyph wider than its slot, so ink
+/// is ~65-85% of reference.
 abstract final class _Layout {
   // Current plate.
   static const double width = 372;
@@ -84,24 +68,20 @@ abstract final class _Layout {
   static const double ptStackDash = 38;
 }
 
-/// Timor-Leste's plate designs.
-///
-/// * [private] — `NN·NNN` and [government] — `NN·NNNG`, black on white with
-///   `TLS` beneath; the article's "four digits and G" contradicts its own
-///   example `05-204G`, so the example is followed.
-/// * [indonesian] — `04·85` expiry above `DF 1202 AA`, white on black, in use
-///   1976–1999. Not issued any more; kept as history.
-/// * [portuguese] — `T-12-34` / `TP-12-34`, and [portugueseStacked] with the
-///   `T` above `12-34`, white on black. Historical.
+/// * [private] `NN·NNN` and [government] `NN·NNNG`, with `TLS` beneath; the
+///   article's "four digits and G" contradicts its own example `05-204G`, so
+///   the example is followed.
+/// * [indonesian]: `04·85` expiry above `DF 1202 AA` (1976-1999), history.
+/// * [portuguese] `T-12-34` / `TP-12-34`, and [portugueseStacked] with the
+///   `T` above `12-34`. History.
 ///
 /// Text groups, one slot each: [private]/[government] `first` (2), `second`
 /// (3) and, on [government], `suffix`; [indonesian] `expiry`, `prefix`,
-/// `number` (1–4 digits) and `suffix` (1–2 letters); the Portuguese plates
-/// `prefix` (`T` or `TP`), `first`, `second`.
+/// `number` (1-4 digits) and `suffix` (1-2 letters); the Portuguese plates
+/// `prefix`, `first`, `second`.
 abstract final class TimorLestePlates {
-  /// One field of [count] cells at [pitch] from [left]; `spacing` brings the
-  /// font's advance up to the pitch, and a variable field ([minLength]) has
-  /// none.
+  /// `spacing` brings the font's advance up to the pitch; a variable field
+  /// ([minLength]) has none.
   static PlateSlot _run(
     PlateAlphabet alphabet,
     int count,
@@ -127,7 +107,6 @@ abstract final class TimorLestePlates {
   static final PlateSpec portugueseStacked = _stackedSpec();
 
   static PlateSpec _current({required bool government}) {
-    final double suffixTop = _Layout.digitTop;
     return PlateSpec(
       id: government ? 'tl.government' : 'tl.private',
       country: TimorLesteCountry.timor_leste,
@@ -157,7 +136,7 @@ abstract final class TimorLestePlates {
             alphabet: TimorLesteAlphabets.letters,
             box: PlateBox(
               _Layout.suffixLeft,
-              suffixTop,
+              _Layout.digitTop,
               _Layout.digitPitch,
               _Layout.digitHeight,
             ),
@@ -214,8 +193,7 @@ abstract final class TimorLestePlates {
       noPanel: true,
       panel: const PlatePanel(box: PlateBox(0, 0, 0, _Layout.height)),
       bands: <PlateBand>[
-        // The expiry box is a white outline: a white pill with the field
-        // laid back inside it. It floats clear of the plate edge.
+        // A white pill with the field laid back inside it, clear of the edge.
         const PlateBand(
           box: PlateBox(
             _Layout.idBoxLeft,

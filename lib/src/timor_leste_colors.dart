@@ -1,10 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-/// The colours of Timor-Leste plates, taken from the fitted reference photos
-/// (`field`/`ink` of the platekit measurement), not from the article's
-/// "black on white".
+/// Measured from the reference photos, not the article.
 abstract final class TimorLesteColors {
-  /// Field of the current plate, `______1.png` (the graphic samples FCFCFC).
+  /// Field of the current plate.
   static const Color white = Color(0xFFFFFFFF);
 
   /// Characters and rim of the current plate; field of the historical plates.

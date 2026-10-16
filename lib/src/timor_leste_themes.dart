@@ -3,7 +3,6 @@ import 'package:plate_core/plate_core.dart';
 
 import 'timor_leste_colors.dart';
 
-/// The Timor-Leste liveries: one ink on one field, so one helper.
 abstract final class TimorLesteThemes {
   static PlateTheme _field({
     required Color field,
@@ -24,8 +23,7 @@ abstract final class TimorLesteThemes {
     alertColor: const Color(0xFFD32F2F),
   );
 
-  /// Black on white with a heavy black rim (~5 mm of 134, corners ~8 mm):
-  /// private and government plates, measured on `______1.png`.
+  /// Heavy black rim (~5 mm of 134, corners ~8 mm).
   static final PlateTheme private = _field(
     field: TimorLesteColors.white,
     ink: TimorLesteColors.black,
@@ -35,11 +33,10 @@ abstract final class TimorLesteThemes {
     plateRadiusRatio: 0.06,
   );
 
-  /// Same livery as [private]; named so the government plate is wired to its
-  /// own theme.
+  /// Same livery as [private], named so each spec has its own theme.
   static final PlateTheme government = private;
 
-  /// White on black with a thin white rim: the Indonesian-era `DF` plate.
+  /// Thin white rim.
   static final PlateTheme indonesian = _field(
     field: TimorLesteColors.black,
     ink: TimorLesteColors.white,
@@ -49,8 +46,7 @@ abstract final class TimorLesteThemes {
     plateRadiusRatio: 0.03,
   );
 
-  /// White on black, frameless (the rim is the field colour): Portuguese
-  /// Timor `T` / `TP` plates.
+  /// Frameless: the rim is the field colour.
   static final PlateTheme portuguese = _field(
     field: TimorLesteColors.black,
     ink: TimorLesteColors.white,

@@ -1,12 +1,8 @@
 import 'package:plate_core/plate_core.dart';
 
-/// Judges a current plate (`TimorLestePlates.private` / `government`): five
-/// digits as `NN·NNN`, and on a government plate the letter `G`. Reports,
-/// never bars.
-///
-/// The article says only "five digits (e.g. 24•180)" and "four digits and the
-/// letter G" for government (its own example is `05-204G`, five digits). It
-/// gives no ranges, so none are checked.
+/// A current plate: five digits as `NN·NNN`, and on a government plate the
+/// letter `G`. No ranges are published, so none are checked. Reports, never
+/// bars.
 class TimorLesteValidator extends GatedPlateValidator {
   const TimorLesteValidator();
 
@@ -30,9 +26,8 @@ class TimorLesteValidator extends GatedPlateValidator {
   }
 }
 
-/// Judges an Indonesian-era plate: an expiry `MMYY` (month 01–12), the
-/// regional code `DF`, 1–4 digits and up to two letters. Does not check
-/// that the expiry is in the 1976–1999 span.
+/// An expiry `MMYY` (month 01-12), the code `DF`, 1-4 digits and up to two
+/// letters. The expiry's year is not range-checked.
 class TimorLesteIndonesianValidator extends GatedPlateValidator {
   const TimorLesteIndonesianValidator();
 
@@ -62,7 +57,7 @@ class TimorLesteIndonesianValidator extends GatedPlateValidator {
   }
 }
 
-/// Judges a Portuguese Timor plate: the prefix `T` (or `TP`) and `NN-NN`.
+/// The prefix `T` or `TP` and `NN-NN`.
 class TimorLestePortugueseValidator extends GatedPlateValidator {
   const TimorLestePortugueseValidator();
 
