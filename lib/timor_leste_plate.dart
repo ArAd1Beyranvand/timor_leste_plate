@@ -7,7 +7,7 @@ library;
 
 export 'src/timor_leste_colors.dart';
 export 'src/timor_leste_country.dart';
-export 'src/timor_leste_themes.dart';
 export 'src/timor_leste_plates.dart';
+export 'src/timor_leste_themes.dart';
 export 'src/timor_leste_validators.dart';
 export 'package:plate_alphabet/plate_alphabet.dart' show TimorLesteAlphabets;
