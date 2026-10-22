@@ -181,8 +181,7 @@ abstract final class TimorLestePlates {
     final double content = cells * _Layout.idPitch + gaps * _Layout.idGap;
     final double left = (_Layout.width - content) / 2;
     final double numberLeft = left + 2 * _Layout.idPitch + _Layout.idGap;
-    final double suffixLeft =
-        numberLeft + digits * _Layout.idPitch + _Layout.idGap;
+    final double suffixLeft = numberLeft + digits * _Layout.idPitch + _Layout.idGap;
     final double dotLeft = _Layout.idExpiryLeft + 2 * _Layout.idExpiryPitch;
     const double box = _Layout.idBoxLine;
     return PlateSpec(
@@ -256,12 +255,7 @@ abstract final class TimorLestePlates {
       labels: <PlateLabel>[
         PlateLabel(
           text: '·',
-          box: PlateBox(
-            dotLeft,
-            _Layout.idExpiryTop,
-            _Layout.idExpiryDot,
-            _Layout.idExpiryHeight,
-          ),
+          box: PlateBox(dotLeft, _Layout.idExpiryTop, _Layout.idExpiryDot, _Layout.idExpiryHeight),
           glyphHeight: _Layout.idExpiryHeight,
         ),
       ],
@@ -275,17 +269,12 @@ abstract final class TimorLestePlates {
   }
 
   static PlateLabel _dash(double left, double top, double width, double slot) =>
-      PlateLabel(
-        text: '-',
-        box: PlateBox(left, top, width, slot),
-        glyphHeight: slot,
-      );
+      PlateLabel(text: '-', box: PlateBox(left, top, width, slot), glyphHeight: slot);
 
   static PlateSpec _portugueseSpec() {
     // `T` or `TP`: one variable field boxed for two letters.
     const int prefix = 2;
-    final double content =
-        prefix * _Layout.ptPitch + 4 * _Layout.ptPitch + 2 * _Layout.ptDash;
+    final double content = prefix * _Layout.ptPitch + 4 * _Layout.ptPitch + 2 * _Layout.ptDash;
     final double left = (_Layout.ptWidth - content) / 2;
     final double dash1 = left + prefix * _Layout.ptPitch;
     final double firstLeft = dash1 + _Layout.ptDash;
@@ -377,12 +366,7 @@ abstract final class TimorLestePlates {
         ),
       ],
       labels: <PlateLabel>[
-        _dash(
-          dash,
-          _Layout.ptStackSecondTop,
-          _Layout.ptStackDash,
-          _Layout.ptStackSlot,
-        ),
+        _dash(dash, _Layout.ptStackSecondTop, _Layout.ptStackDash, _Layout.ptStackSlot),
       ],
       textGroups: const <PlateTextGroup>[
         PlateTextGroup(<int>[0], key: 'prefix'),

@@ -26,36 +26,16 @@ void main() {
   /// category id -> (spec, theme, space-separated sample value)
   final Map<String, (PlateSpec, PlateTheme, String)> cases =
       <String, (PlateSpec, PlateTheme, String)>{
-        'private': (
-          TimorLestePlates.private,
-          TimorLesteThemes.private,
-          '14 875',
-        ),
-        'government': (
-          TimorLestePlates.government,
-          TimorLesteThemes.government,
-          '05 204 G',
-        ),
-        'indonesian': (
-          TimorLestePlates.indonesian,
-          TimorLesteThemes.indonesian,
-          '0485 DF 1202 AA',
-        ),
-        'portuguese_t': (
-          TimorLestePlates.portuguese,
-          TimorLesteThemes.portuguese,
-          'T 12 34',
-        ),
+        'private': (TimorLestePlates.private, TimorLesteThemes.private, '14 875'),
+        'government': (TimorLestePlates.government, TimorLesteThemes.government, '05 204 G'),
+        'indonesian': (TimorLestePlates.indonesian, TimorLesteThemes.indonesian, '0485 DF 1202 AA'),
+        'portuguese_t': (TimorLestePlates.portuguese, TimorLesteThemes.portuguese, 'T 12 34'),
         'indonesian_short': (
           TimorLestePlates.indonesian,
           TimorLesteThemes.indonesian,
           '0485 DF 12 A',
         ),
-        'portuguese_tp': (
-          TimorLestePlates.portuguese,
-          TimorLesteThemes.portuguese,
-          'TP 12 34',
-        ),
+        'portuguese_tp': (TimorLestePlates.portuguese, TimorLesteThemes.portuguese, 'TP 12 34'),
         'portuguese_stacked': (
           TimorLestePlates.portugueseStacked,
           TimorLesteThemes.portuguese,
@@ -64,30 +44,29 @@ void main() {
       };
 
   test('variable fields complete at their minimum', () {
-    final PlateController c = PlateController.fromValues(
-      TimorLestePlates.indonesian,
-      ['0485', 'DF', '1', 'A'],
-    );
+    final PlateController c = PlateController.fromValues(TimorLestePlates.indonesian, [
+      '0485',
+      'DF',
+      '1',
+      'A',
+    ]);
     expect(c.isCompleted, isTrue);
     c.setAt(2, '');
     expect(c.isCompleted, isFalse);
     c.dispose();
-    final PlateController t = PlateController.fromValues(
-      TimorLestePlates.portuguese,
-      ['T', '12', '34'],
-    );
+    final PlateController t = PlateController.fromValues(TimorLestePlates.portuguese, [
+      'T',
+      '12',
+      '34',
+    ]);
     expect(t.isCompleted, isTrue);
     t.dispose();
   });
 
-  for (final MapEntry<String, (PlateSpec, PlateTheme, String)> c
-      in cases.entries) {
+  for (final MapEntry<String, (PlateSpec, PlateTheme, String)> c in cases.entries) {
     testWidgets(c.key, (tester) async {
       final (PlateSpec spec, PlateTheme theme, String values) = c.value;
-      final PlateController controller = PlateController.fromValues(
-        spec,
-        values.split(' '),
-      );
+      final PlateController controller = PlateController.fromValues(spec, values.split(' '));
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -109,10 +88,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await expectLater(
-        find.byType(PlateView),
-        matchesGoldenFile('goldens/tl_${c.key}.png'),
-      );
+      await expectLater(find.byType(PlateView), matchesGoldenFile('goldens/tl_${c.key}.png'));
       await tester.pumpWidget(const SizedBox.shrink());
       controller.dispose();
     });

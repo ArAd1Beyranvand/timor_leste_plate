@@ -14,8 +14,7 @@ class TimorLesteValidator extends GatedPlateValidator {
 
   @override
   PlateValidation judge(PlateEntry entry) {
-    if (!isDigitsOfLength(entry.group('first'), 2) ||
-        !isDigitsOfLength(entry.group('second'), 3)) {
+    if (!isDigitsOfLength(entry.group('first'), 2) || !isDigitsOfLength(entry.group('second'), 3)) {
       return const PlateValidation.invalid(reasonDigits);
     }
     final String suffix = entry.group('suffix');
@@ -41,8 +40,7 @@ class TimorLesteIndonesianValidator extends GatedPlateValidator {
   @override
   PlateValidation judge(PlateEntry entry) {
     final String expiry = entry.group('expiry');
-    final int month =
-        int.tryParse(expiry.length == 4 ? expiry.substring(0, 2) : '') ?? 0;
+    final int month = int.tryParse(expiry.length == 4 ? expiry.substring(0, 2) : '') ?? 0;
     if (!isDigitsOfLength(expiry, 4) || month < 1 || month > 12) {
       return const PlateValidation.invalid(reasonExpiry);
     }
@@ -73,8 +71,7 @@ class TimorLestePortugueseValidator extends GatedPlateValidator {
     if (prefix != 'T' && prefix != 'TP') {
       return const PlateValidation.invalid(reasonPrefix);
     }
-    if (!isDigitsOfLength(entry.group('first'), 2) ||
-        !isDigitsOfLength(entry.group('second'), 2)) {
+    if (!isDigitsOfLength(entry.group('first'), 2) || !isDigitsOfLength(entry.group('second'), 2)) {
       return const PlateValidation.invalid(reasonDigits);
     }
     return const PlateValidation.valid();
