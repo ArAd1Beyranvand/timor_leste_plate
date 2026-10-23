@@ -1,7 +1,7 @@
 name: timor_leste_plate
 description: "Timor-Leste's licence plates for the plate_core library — private and government plates with TLS, plus the historical Indonesian and Portuguese Timor plates; themes, alphabet and advisory validators."
 version: 0.1.0
-publish_to: none
+repository: https://github.com/ArAd1Beyranvand/timor_leste_plate
 resolution: workspace
 
 environment:
