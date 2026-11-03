@@ -1,16 +1,10 @@
 import 'package:plate_core/plate_core.dart';
 
-// TODO(py): [D4-code] hand-port; reason strings are the contract, keep them byte-identical.
-// TODO(ts): [D4-code] hand-port; reason strings are the contract, keep them byte-identical.
-// TODO(kt): [D4-code] hand-port; reason strings are the contract, keep them byte-identical.
 /// A current plate: five digits as `NN·NNN`, and on a government plate the
 /// letter `G`. No ranges are published, so none are checked. Reports, never
 /// bars.
 class TimorLesteValidator extends GatedPlateValidator {
-  const TimorLesteValidator();
-
-  @override
-  String get gateGroup => 'second';
+  const TimorLesteValidator() : super('second');
 
   static const String reasonDigits = 'The number is five digits, NN·NNN.';
   static const String reasonSuffix = 'A government plate ends in G.';
@@ -32,10 +26,7 @@ class TimorLesteValidator extends GatedPlateValidator {
 /// An expiry `MMYY` (month 01-12), the code `DF`, 1-4 digits and up to two
 /// letters. The expiry's year is not range-checked.
 class TimorLesteIndonesianValidator extends GatedPlateValidator {
-  const TimorLesteIndonesianValidator();
-
-  @override
-  String get gateGroup => 'number';
+  const TimorLesteIndonesianValidator() : super('number');
 
   static const String reasonExpiry = 'The expiry is a month 01–12 and a year.';
   static const String reasonRegion = 'East Timor plates carry the code DF.';
@@ -62,10 +53,7 @@ class TimorLesteIndonesianValidator extends GatedPlateValidator {
 
 /// The prefix `T` or `TP` and `NN-NN`.
 class TimorLestePortugueseValidator extends GatedPlateValidator {
-  const TimorLestePortugueseValidator();
-
-  @override
-  String get gateGroup => 'second';
+  const TimorLestePortugueseValidator() : super('second');
 
   static const String reasonPrefix = 'The prefix is T or TP.';
   static const String reasonDigits = 'The number is four digits, NN-NN.';

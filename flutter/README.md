@@ -6,13 +6,24 @@ GO VEGAN 🌱
 
 From the mighty people of Iran to the resilient people of Timor-Leste to view examples:
 
-https://platexample.ir/#/discover/timorleste
+https://platexample.ir/#/discover/timorleste:flutter
 
 # timor_leste_plate
 
-Timor-Leste's licence plates for the `plate_core` library. The current 372x134 mm plates, black on white (private `NN·NNN`, government `NN·NNNG`), plus the historical Indonesian `DF` plate and the Portuguese Timor `T`/`TP` plates, both white on black.
+Timor-Leste's licence plates for plate_core: private and government plates with TLS, plus the historical Indonesian and Portuguese Timor plates; themes, alphabet, and more.
 
-## Install
+## Languages
+
+| Language | Folder | Example |
+| --- | --- | --- |
+| Flutter / Dart | [`flutter/`](https://github.com/ArAd1Beyranvand/timor_leste_plate/tree/main/flutter) | [platexample](https://platexample.ir/#/discover/timorleste:flutter) |
+| Kotlin | [`kotlin/`](https://github.com/ArAd1Beyranvand/timor_leste_plate/tree/main/kotlin) | [platexample](https://platexample.ir/#/discover/timorleste:kotlin) |
+| Python | [`python/`](https://github.com/ArAd1Beyranvand/timor_leste_plate/tree/main/python) | [platexample](https://platexample.ir/#/discover/timorleste:python) |
+| TypeScript | [`typescript/`](https://github.com/ArAd1Beyranvand/timor_leste_plate/tree/main/typescript) | [platexample](https://platexample.ir/#/discover/timorleste:typescript) |
+
+## Quick start
+
+### Install
 
 ```yaml
 dependencies:
@@ -20,7 +31,7 @@ dependencies:
   timor_leste_plate: ^0.1.0
 ```
 
-## Use
+### Use
 
 ```dart
 import 'package:plate_core/plate_core.dart';
@@ -35,14 +46,31 @@ PlateCanvas(
 );
 ```
 
-## Contains
+## Specs
 
-- `TimorLesteCountry` — country panel: `timor_leste`.
-- `TimorLestePlates` — 5 plate specs: `private`, `government`, `indonesian`, `portuguese`, `portugueseStacked`.
-- `TimorLesteThemes` — 4 themes: `private`, `government`, `indonesian`, `portuguese`.
-- `TimorLesteValidator` — advisory validator; flags the frame, never blocks a keystroke.
-- `TimorLesteIndonesianValidator` — advisory validator; flags the frame, never blocks a keystroke.
-- `TimorLestePortugueseValidator` — advisory validator; flags the frame, never blocks a keystroke.
+Each spec is one plate layout.
+
+- `TimorLestePlates.private`
+- `TimorLestePlates.government`
+- `TimorLestePlates.indonesian`
+- `TimorLestePlates.portuguese`
+- `TimorLestePlates.portugueseStacked`
+
+## Themes
+
+- `TimorLesteThemes.private`
+- `TimorLesteThemes.government`
+- `TimorLesteThemes.indonesian`
+- `TimorLesteThemes.portuguese`
+
+## Change it
+
+`PlateCanvas` takes `spec:` (an entry of `TimorLestePlates`) and `theme:` (an entry of `TimorLesteThemes`). Set `validator:` to `TimorLesteValidator()` and `autoValidate: true` to show validation hints.
+
+## Also included
+
+- `TimorLesteCountry` — the country panel.
+- `TimorLesteValidator` — the plate validator.
 
 ## Plates
 
@@ -62,3 +90,6 @@ Text groups, one slot each: `private`/`government` `first` (2), `second`
 
 Painted by [`plate_core`](https://pub.dev/packages/plate_core); alphabets shared through [`plate_alphabet`](https://pub.dev/packages/plate_alphabet); optional character picker in [`plate_keypad`](https://pub.dev/packages/plate_keypad).
 
+## License
+
+See [LICENSE](https://github.com/ArAd1Beyranvand/timor_leste_plate/blob/main/LICENSE).

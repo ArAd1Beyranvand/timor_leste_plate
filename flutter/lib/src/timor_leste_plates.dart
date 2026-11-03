@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:plate_alphabet/plate_alphabet.dart';
 import 'package:plate_core/plate_core.dart';
 
@@ -21,51 +19,26 @@ import 'timor_leste_country.dart';
 /// is ~65-85% of reference.
 abstract final class _Layout {
   // Current plate.
-  static const double width = 372;
-  static const double height = 134;
-  static const double digitTop = 8;
-  static const double digitHeight = 100;
-  static const double digitPitch = 49.5;
-  static const double firstLeft = 3.5;
-  static const double secondLeft = 146.5;
-  static const double suffixLeft = 297;
-  static const double diamondCentreX = 127.6;
-  static const double diamondCentreY = 57;
-  static const double diamondGlyph = 26;
-  static const double tlsCentreX = 188.8;
-  static const double tlsCentreY = 114;
+  static const double width = 372, height = 134, digitTop = 8;
+  static const double digitHeight = 100, digitPitch = 49.5, firstLeft = 3.5;
+  static const double secondLeft = 146.5, suffixLeft = 297;
+  static const double diamondCentreX = 127.6, diamondCentreY = 57;
+  static const double diamondGlyph = 26, tlsCentreX = 188.8, tlsCentreY = 114;
   static const double tlsGlyph = 32;
 
   // Indonesian plate.
-  static const double idPitch = 35.5;
-  static const double idGap = 28;
-  static const double idTop = 31.5;
-  static const double idHeight = 100;
-  static const double idExpiryLeft = 137;
-  static const double idExpiryPitch = 21;
-  static const double idExpiryDot = 14;
-  static const double idExpiryTop = 0.9;
-  static const double idExpiryHeight = 37;
-  static const double idBoxLeft = 14.8;
-  static const double idBoxRight = 357;
-  static const double idBoxTop = 3;
-  static const double idBoxBottom = 36.5;
+  static const double idPitch = 35.5, idGap = 28, idTop = 31.5, idHeight = 100;
+  static const double idExpiryLeft = 137, idExpiryPitch = 21, idExpiryDot = 14;
+  static const double idExpiryTop = 0.9, idExpiryHeight = 37, idBoxLeft = 14.8;
+  static const double idBoxRight = 357, idBoxTop = 3, idBoxBottom = 36.5;
   static const double idBoxLine = 3.3;
 
   // Portuguese Timor.
-  static const double ptWidth = 500;
-  static const double ptHeight = 111;
-  static const double ptTop = 3;
-  static const double ptSlot = 105;
-  static const double ptPitch = 54;
-  static const double ptDash = 34;
-  static const double ptStackWidth = 300;
-  static const double ptStackHeight = 212;
-  static const double ptStackTop = 7;
-  static const double ptStackSecondTop = 112;
-  static const double ptStackSlot = 94;
-  static const double ptStackPitch = 52;
-  static const double ptStackDash = 38;
+  static const double ptWidth = 500, ptHeight = 111, ptTop = 3, ptSlot = 105;
+  static const double ptPitch = 54, ptDash = 34, ptStackWidth = 300;
+  static const double ptStackHeight = 212, ptStackTop = 7;
+  static const double ptStackSecondTop = 112, ptStackSlot = 94;
+  static const double ptStackPitch = 52, ptStackDash = 38;
 }
 
 /// * [private] `NN·NNN` and [government] `NN·NNNG`, with `TLS` beneath; the
@@ -80,23 +53,8 @@ abstract final class _Layout {
 /// `number` (1-4 digits) and `suffix` (1-2 letters); the Portuguese plates
 /// `prefix`, `first`, `second`.
 abstract final class TimorLestePlates {
-  /// `spacing` brings the font's advance up to the pitch; a variable field
-  /// ([minLength]) has none.
-  static PlateSlot _run(
-    PlateAlphabet alphabet,
-    int count,
-    double left,
-    double top,
-    double pitch,
-    double height, {
-    int? minLength,
-  }) => PlateSlot(
-    alphabet: alphabet,
-    box: PlateBox(left, top, count * pitch, height),
-    length: count,
-    minLength: minLength,
-    spacing: minLength == null ? max(0, pitch - 0.6 * 0.72 * height) : 0,
-  );
+  static const PlateAlphabet _digits = TimorLesteAlphabets.digits;
+  static const PlateAlphabet _letters = TimorLesteAlphabets.letters;
 
   static final PlateSpec private = _current(government: false);
   static final PlateSpec government = _current(government: true);
@@ -106,68 +64,75 @@ abstract final class TimorLestePlates {
 
   static final PlateSpec portugueseStacked = _stackedSpec();
 
+  static PlateSpec _spec(
+    String id,
+    double width,
+    double height, {
+    required List<PlateSlot> slots,
+    List<PlateLabel> labels = const <PlateLabel>[],
+    List<PlateBand> bands = const <PlateBand>[],
+  }) => PlateSpec(
+    id: id,
+    country: TimorLesteCountry.timor_leste,
+    canvasWidth: width,
+    canvasHeight: height,
+    noPanel: true,
+    panel: PlatePanel(box: PlateBox(0, 0, 0, height)),
+    bands: bands,
+    slots: slots,
+    labels: labels,
+  );
+
   static PlateSpec _current({required bool government}) {
-    return PlateSpec(
-      id: government ? 'tl.government' : 'tl.private',
-      country: TimorLesteCountry.timor_leste,
-      canvasWidth: _Layout.width,
-      canvasHeight: _Layout.height,
-      noPanel: true,
-      panel: const PlatePanel(box: PlateBox(0, 0, 0, _Layout.height)),
+    PlateSlot digits(int n, double left, String group) => plateRun(
+      _digits,
+      n,
+      left: left,
+      top: _Layout.digitTop,
+      pitch: _Layout.digitPitch,
+      height: _Layout.digitHeight,
+      group: group,
+    );
+    return _spec(
+      government ? 'tl.government' : 'tl.private',
+      _Layout.width,
+      _Layout.height,
       slots: <PlateSlot>[
-        _run(
-          TimorLesteAlphabets.digits,
-          2,
-          _Layout.firstLeft,
-          _Layout.digitTop,
-          _Layout.digitPitch,
-          _Layout.digitHeight,
-        ),
-        _run(
-          TimorLesteAlphabets.digits,
-          3,
-          _Layout.secondLeft,
-          _Layout.digitTop,
-          _Layout.digitPitch,
-          _Layout.digitHeight,
-        ),
+        digits(2, _Layout.firstLeft, 'first'),
+        digits(3, _Layout.secondLeft, 'second'),
         if (government)
-          PlateSlot(
-            alphabet: TimorLesteAlphabets.letters,
+          const PlateSlot(
+            alphabet: _letters,
             box: PlateBox(
               _Layout.suffixLeft,
               _Layout.digitTop,
               _Layout.digitPitch,
               _Layout.digitHeight,
             ),
+            group: 'suffix',
           ),
       ],
-      labels: <PlateLabel>[
+      labels: const <PlateLabel>[
         PlateLabel(
           text: '◆',
-          box: PlateBox(
-            _Layout.diamondCentreX - 20,
-            _Layout.diamondCentreY - _Layout.diamondGlyph / 2,
+          box: PlateBox.centered(
+            _Layout.diamondCentreX,
+            _Layout.diamondCentreY,
             40,
             _Layout.diamondGlyph,
           ),
           glyphHeight: _Layout.diamondGlyph,
         ),
         PlateLabel(
-          text: 'T L S',
-          box: PlateBox(
-            _Layout.tlsCentreX - 35,
-            _Layout.tlsCentreY - _Layout.tlsGlyph / 2,
+          text: 'T L S',
+          box: PlateBox.centered(
+            _Layout.tlsCentreX,
+            _Layout.tlsCentreY,
             70,
             _Layout.tlsGlyph,
           ),
           glyphHeight: _Layout.tlsGlyph,
         ),
-      ],
-      textGroups: <PlateTextGroup>[
-        const PlateTextGroup(<int>[0], key: 'first'),
-        const PlateTextGroup(<int>[1], key: 'second'),
-        if (government) const PlateTextGroup(<int>[2], key: 'suffix'),
       ],
     );
   }
@@ -175,42 +140,30 @@ abstract final class TimorLestePlates {
   static PlateSpec _indonesianSpec() {
     // The number and the suffix are variable fields, boxed for their longest
     // run: up to four digits and two letters.
-    const int digits = 4, suffix = 2;
-    const int cells = 2 + digits + suffix;
-    const int gaps = 2;
-    final double content = cells * _Layout.idPitch + gaps * _Layout.idGap;
-    final double left = (_Layout.width - content) / 2;
-    final double numberLeft = left + 2 * _Layout.idPitch + _Layout.idGap;
-    final double suffixLeft =
-        numberLeft + digits * _Layout.idPitch + _Layout.idGap;
-    final double dotLeft = _Layout.idExpiryLeft + 2 * _Layout.idExpiryPitch;
     const double box = _Layout.idBoxLine;
-    return PlateSpec(
-      id: 'tl.indonesian',
-      country: TimorLesteCountry.timor_leste,
-      canvasWidth: _Layout.width,
-      canvasHeight: _Layout.height,
-      noPanel: true,
-      panel: const PlatePanel(box: PlateBox(0, 0, 0, _Layout.height)),
-      bands: <PlateBand>[
+    return _spec(
+      'tl.indonesian',
+      _Layout.width,
+      _Layout.height,
+      bands: const <PlateBand>[
         // A white pill with the field laid back inside it, clear of the edge.
-        const PlateBand(
-          box: PlateBox(
+        PlateBand(
+          box: PlateBox.fromLTRB(
             _Layout.idBoxLeft,
             _Layout.idBoxTop,
-            _Layout.idBoxRight - _Layout.idBoxLeft,
-            _Layout.idBoxBottom - _Layout.idBoxTop,
+            _Layout.idBoxRight,
+            _Layout.idBoxBottom,
           ),
           color: TimorLesteColors.white,
           topCornerRadius: 8,
           bottomCornerRadius: 8,
         ),
-        const PlateBand(
-          box: PlateBox(
+        PlateBand(
+          box: PlateBox.fromLTRB(
             _Layout.idBoxLeft + box,
             _Layout.idBoxTop + box,
-            _Layout.idBoxRight - _Layout.idBoxLeft - 2 * box,
-            _Layout.idBoxBottom - _Layout.idBoxTop - 2 * box,
+            _Layout.idBoxRight - box,
+            _Layout.idBoxBottom - box,
           ),
           color: TimorLesteColors.black,
           topCornerRadius: 5,
@@ -218,46 +171,33 @@ abstract final class TimorLestePlates {
         ),
       ],
       slots: <PlateSlot>[
-        _run(
-          TimorLesteAlphabets.digits,
+        plateRun(
+          _digits,
           4,
-          _Layout.idExpiryLeft,
-          _Layout.idExpiryTop,
-          _Layout.idExpiryPitch,
-          _Layout.idExpiryHeight,
+          left: _Layout.idExpiryLeft,
+          top: _Layout.idExpiryTop,
+          pitch: _Layout.idExpiryPitch,
+          height: _Layout.idExpiryHeight,
+          group: 'expiry',
         ),
-        _run(
-          TimorLesteAlphabets.letters,
-          2,
-          left,
-          _Layout.idTop,
-          _Layout.idPitch,
-          _Layout.idHeight,
-        ),
-        _run(
-          TimorLesteAlphabets.digits,
-          digits,
-          numberLeft,
-          _Layout.idTop,
-          _Layout.idPitch,
-          _Layout.idHeight,
-          minLength: 1,
-        ),
-        _run(
-          TimorLesteAlphabets.letters,
-          suffix,
-          suffixLeft,
-          _Layout.idTop,
-          _Layout.idPitch,
-          _Layout.idHeight,
-          minLength: 1,
-        ),
+        ...plateRow(
+          const <PlateRowItem>[
+            PlateRowRun(_letters, 2, group: 'prefix'),
+            PlateRowRun(_digits, 4, minLength: 1, spacing: 0, group: 'number'),
+            PlateRowRun(_letters, 2, minLength: 1, spacing: 0, group: 'suffix'),
+          ],
+          centre: _Layout.width / 2,
+          top: _Layout.idTop,
+          height: _Layout.idHeight,
+          pitch: _Layout.idPitch,
+          gap: _Layout.idGap,
+        ).slots,
       ],
-      labels: <PlateLabel>[
+      labels: const <PlateLabel>[
         PlateLabel(
           text: '·',
           box: PlateBox(
-            dotLeft,
+            _Layout.idExpiryLeft + 2 * _Layout.idExpiryPitch,
             _Layout.idExpiryTop,
             _Layout.idExpiryDot,
             _Layout.idExpiryHeight,
@@ -265,130 +205,58 @@ abstract final class TimorLestePlates {
           glyphHeight: _Layout.idExpiryHeight,
         ),
       ],
-      textGroups: const <PlateTextGroup>[
-        PlateTextGroup(<int>[0], key: 'expiry'),
-        PlateTextGroup(<int>[1], key: 'prefix'),
-        PlateTextGroup(<int>[2], key: 'number'),
-        PlateTextGroup(<int>[3], key: 'suffix'),
-      ],
     );
   }
 
-  static PlateLabel _dash(double left, double top, double width, double slot) =>
-      PlateLabel(
-        text: '-',
-        box: PlateBox(left, top, width, slot),
-        glyphHeight: slot,
-      );
-
+  /// `T` or `TP` (one variable field boxed for two letters), then two pairs
+  /// of digits, dash-separated.
   static PlateSpec _portugueseSpec() {
-    // `T` or `TP`: one variable field boxed for two letters.
-    const int prefix = 2;
-    final double content =
-        prefix * _Layout.ptPitch + 4 * _Layout.ptPitch + 2 * _Layout.ptDash;
-    final double left = (_Layout.ptWidth - content) / 2;
-    final double dash1 = left + prefix * _Layout.ptPitch;
-    final double firstLeft = dash1 + _Layout.ptDash;
-    final double dash2 = firstLeft + 2 * _Layout.ptPitch;
-    final double secondLeft = dash2 + _Layout.ptDash;
-    return PlateSpec(
-      id: 'tl.portuguese',
-      country: TimorLesteCountry.timor_leste,
-      canvasWidth: _Layout.ptWidth,
-      canvasHeight: _Layout.ptHeight,
-      noPanel: true,
-      panel: const PlatePanel(box: PlateBox(0, 0, 0, _Layout.ptHeight)),
-      slots: <PlateSlot>[
-        _run(
-          TimorLesteAlphabets.letters,
-          prefix,
-          left,
-          _Layout.ptTop,
-          _Layout.ptPitch,
-          _Layout.ptSlot,
-          minLength: 1,
-        ),
-        _run(
-          TimorLesteAlphabets.digits,
-          2,
-          firstLeft,
-          _Layout.ptTop,
-          _Layout.ptPitch,
-          _Layout.ptSlot,
-        ),
-        _run(
-          TimorLesteAlphabets.digits,
-          2,
-          secondLeft,
-          _Layout.ptTop,
-          _Layout.ptPitch,
-          _Layout.ptSlot,
-        ),
+    final PlateRowLayout row = plateRow(
+      const <PlateRowItem>[
+        PlateRowRun(_letters, 2, minLength: 1, spacing: 0, group: 'prefix'),
+        PlateRowText('-', _Layout.ptDash),
+        PlateRowRun(_digits, 2, group: 'first'),
+        PlateRowText('-', _Layout.ptDash),
+        PlateRowRun(_digits, 2, group: 'second'),
       ],
-      labels: <PlateLabel>[
-        _dash(dash1, _Layout.ptTop, _Layout.ptDash, _Layout.ptSlot),
-        _dash(dash2, _Layout.ptTop, _Layout.ptDash, _Layout.ptSlot),
-      ],
-      textGroups: const <PlateTextGroup>[
-        PlateTextGroup(<int>[0], key: 'prefix'),
-        PlateTextGroup(<int>[1], key: 'first'),
-        PlateTextGroup(<int>[2], key: 'second'),
-      ],
+      centre: _Layout.ptWidth / 2,
+      top: _Layout.ptTop,
+      height: _Layout.ptSlot,
+      pitch: _Layout.ptPitch,
+    );
+    return _spec(
+      'tl.portuguese',
+      _Layout.ptWidth,
+      _Layout.ptHeight,
+      slots: row.slots,
+      labels: row.labels,
     );
   }
 
   static PlateSpec _stackedSpec() {
-    final double content = 4 * _Layout.ptStackPitch + _Layout.ptStackDash;
-    final double left = (_Layout.ptStackWidth - content) / 2;
-    final double dash = left + 2 * _Layout.ptStackPitch;
-    final double secondLeft = dash + _Layout.ptStackDash;
-    return PlateSpec(
-      id: 'tl.portuguese.stacked',
-      country: TimorLesteCountry.timor_leste,
-      canvasWidth: _Layout.ptStackWidth,
-      canvasHeight: _Layout.ptStackHeight,
-      noPanel: true,
-      panel: const PlatePanel(box: PlateBox(0, 0, 0, _Layout.ptStackHeight)),
+    PlateRowLayout row(List<PlateRowItem> items, double top) => plateRow(
+      items,
+      centre: _Layout.ptStackWidth / 2,
+      top: top,
+      height: _Layout.ptStackSlot,
+      pitch: _Layout.ptStackPitch,
+    );
+    final PlateRowLayout digits = row(const <PlateRowItem>[
+      PlateRowRun(_digits, 2, group: 'first'),
+      PlateRowText('-', _Layout.ptStackDash),
+      PlateRowRun(_digits, 2, group: 'second'),
+    ], _Layout.ptStackSecondTop);
+    return _spec(
+      'tl.portuguese.stacked',
+      _Layout.ptStackWidth,
+      _Layout.ptStackHeight,
       slots: <PlateSlot>[
-        PlateSlot(
-          alphabet: TimorLesteAlphabets.letters,
-          box: PlateBox(
-            (_Layout.ptStackWidth - _Layout.ptStackPitch) / 2,
-            _Layout.ptStackTop,
-            _Layout.ptStackPitch,
-            _Layout.ptStackSlot,
-          ),
-        ),
-        _run(
-          TimorLesteAlphabets.digits,
-          2,
-          left,
-          _Layout.ptStackSecondTop,
-          _Layout.ptStackPitch,
-          _Layout.ptStackSlot,
-        ),
-        _run(
-          TimorLesteAlphabets.digits,
-          2,
-          secondLeft,
-          _Layout.ptStackSecondTop,
-          _Layout.ptStackPitch,
-          _Layout.ptStackSlot,
-        ),
+        ...row(const <PlateRowItem>[
+          PlateRowRun(_letters, 1, spacing: 0, group: 'prefix'),
+        ], _Layout.ptStackTop).slots,
+        ...digits.slots,
       ],
-      labels: <PlateLabel>[
-        _dash(
-          dash,
-          _Layout.ptStackSecondTop,
-          _Layout.ptStackDash,
-          _Layout.ptStackSlot,
-        ),
-      ],
-      textGroups: const <PlateTextGroup>[
-        PlateTextGroup(<int>[0], key: 'prefix'),
-        PlateTextGroup(<int>[1], key: 'first'),
-        PlateTextGroup(<int>[2], key: 'second'),
-      ],
+      labels: digits.labels,
     );
   }
 }
